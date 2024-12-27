@@ -1,9 +1,12 @@
-package configs;
+package driver;
 
+import configs.ConfigurationReader;
 import constants.common.BrowserTypes;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import lombok.extern.log4j.Log4j;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.util.Optional;
@@ -17,18 +20,18 @@ public class DriverManager {
          return  driverThreadLocal.get();
     }
 
-    public static void initDriver() {
+    public static void initDriver(String resolution) {
          if (driverThreadLocal.get() == null) {
-             WebDriver driver = createDriver(Configuration.getBrowserType());
+             WebDriver driver = createDriver(ConfigurationReader.getBrowserType(),resolution);
              driverThreadLocal.set(driver);
              maximizeWindow(driver);
          }
     }
 
-    private static WebDriver createDriver(BrowserTypes browserType) {
+    private static WebDriver createDriver(BrowserTypes browserType, String resolution) {
         return switch (browserType) {
 
-            case CHROME -> getChromeDriver();
+            case CHROME -> getChromeDriver(resolution);
 
             case FIREFOX -> getFirefoxDriver();
             default -> throw new IllegalArgumentException("Unsupported browser type: " + browserType);
@@ -41,7 +44,9 @@ public class DriverManager {
             driverThreadLocal.remove();
         });}
 
-    private static WebDriver getChromeDriver() {
+    private static WebDriver getChromeDriver(String resolution) {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--window-size=" + resolution);
         WebDriverManager.chromedriver().setup();
         return new ChromeDriver();
     }

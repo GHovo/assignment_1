@@ -11,7 +11,7 @@ import static constants.common.BaseConstants.BROWSER;
 import static constants.common.BaseConstants.CONFIGURATION_PROPERTIES_PATH;
 import static constants.common.BrowserTypes.CHROME;
 
-public class Configuration {
+public class ConfigurationReader {
     public static BrowserTypes BROWSER_TYPE;
     public static String BASE_URL;
     public static final Properties BASE_URL_PROPERTIES = readFile( CONFIGURATION_PROPERTIES_PATH) ;

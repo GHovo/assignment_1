@@ -1,12 +1,13 @@
 package helpers;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-import static configs.DriverManager.getDriver;
+import static driver.DriverManager.getDriver;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 
 public class WaitHelps {
@@ -17,11 +18,11 @@ public class WaitHelps {
     private static WebDriverWait wait;
 
 
-    public static WaitHelps getWait() {
-        return getCustomWait();
-    }
+//    public static WaitHelps getWait() {
+//        return getCustomWait();
+//    }
 
-    private static WaitHelps getCustomWait() {
+    private static WaitHelps initCustomWait() {
         WaitHelps waitUtils = new WaitHelps();
         wait = new WebDriverWait(getDriver(), Duration.ofSeconds(WaitHelps.TIMEOUT), Duration.ofMillis(DEFAULT_POLLING_INTERVAL));
         return waitUtils;
@@ -31,7 +32,8 @@ public class WaitHelps {
         wait.until(visibilityOf(element));
     }
 
-    public void waitForPageLoadComplete() {
+    public void waitForPageLoadComplete(WebDriver webDriver, int timeout) {
+
         wait.until((driver) -> String.valueOf(((JavascriptExecutor)driver)
                 .executeScript("return document.readyState")).equals("complete"));
     }
