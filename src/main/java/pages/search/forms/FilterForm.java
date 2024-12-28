@@ -1,16 +1,11 @@
 package pages.search.forms;
 
 import api.search.FilterOptions;
+import helpers.WaitHelps;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.FindBys;
 import pages.BasePage;
-
-import java.util.List;
-
-import static api.search.FilterOptions.License.COMMERCIAL;
 
 public class FilterForm extends BasePage {
     @FindBy(xpath = "//h4[text()='License']")
@@ -19,16 +14,16 @@ public class FilterForm extends BasePage {
     private WebElement allLicense;
 
     @FindBy(xpath = "//li[@aria-label='licenses-Commercial']")
-    private WebElement commercialLicense;
+    public WebElement commercialLicense;
 
     @FindBy(xpath = "//li[@aria-label='licenses-Personal']")
-    private WebElement personalLicense;
+    public WebElement personalLicense;
     @FindBy(xpath = "//div[h3[text()='Chosen Filters']]")
-    private WebElement chosenFiltersTitle;
+    public WebElement chosenFiltersTitle;
     @FindBy(xpath = "//button[span[text()='Personal']]")
-    private WebElement chosenFilter;
-    @FindBy(xpath = "//div[@data-testid='all-content-grid-root']//i[@data-testid='badge']")
-    private List<WebElement> badges;
+    public WebElement chosenFilter;
+    @FindBy(xpath = "//button[span[text()='Clear All']]")
+    public WebElement clearAllButton;
     public FilterForm(WebDriver driver) {
         super(driver);
     }
@@ -39,11 +34,12 @@ public class FilterForm extends BasePage {
             case COMMERCIAL -> commercialLicense.click();
             case PERSONAL -> personalLicense.click();
             default ->
-                throw new IllegalArgumentException("Invalid License Type: " + licenseType);
+                    throw new IllegalArgumentException("Invalid License Type: " + licenseType);
         }
+        WaitHelps.getWait().waitUntilElementToBeVisible(clearAllButton);
     }
-
-    public int getBadgeCount(){
-        return badges.size();
+    public void clearAllFilters(){
+        WaitHelps.getWait().waitUntilElementToBeVisible(clearAllButton);
+        clearAllButton.click();
     }
 }

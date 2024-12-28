@@ -3,10 +3,8 @@ package driver;
 import configs.ConfigurationReader;
 import constants.common.BrowserTypes;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import lombok.extern.log4j.Log4j;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.util.Optional;
@@ -14,24 +12,23 @@ import java.util.Optional;
 public class DriverManager {
     private static final ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<>();
 
-     private DriverManager(){}
+    private DriverManager(){}
 
     public static WebDriver getDriver() {
-         return  driverThreadLocal.get();
+        return  driverThreadLocal.get();
     }
 
-    public static void initDriver(String resolution) {
-         if (driverThreadLocal.get() == null) {
-             WebDriver driver = createDriver(ConfigurationReader.getBrowserType(),resolution);
-             driverThreadLocal.set(driver);
-             maximizeWindow(driver);
-         }
+    public static void initDriver() {
+        if (driverThreadLocal.get() == null) {
+            WebDriver driver = createDriver(ConfigurationReader.getBrowserType());
+            driverThreadLocal.set(driver);
+        }
     }
 
-    private static WebDriver createDriver(BrowserTypes browserType, String resolution) {
+    private static WebDriver createDriver(BrowserTypes browserType) {
         return switch (browserType) {
 
-            case CHROME -> getChromeDriver(resolution);
+            case CHROME -> getChromeDriver();
 
             case FIREFOX -> getFirefoxDriver();
             default -> throw new IllegalArgumentException("Unsupported browser type: " + browserType);
@@ -44,9 +41,7 @@ public class DriverManager {
             driverThreadLocal.remove();
         });}
 
-    private static WebDriver getChromeDriver(String resolution) {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--window-size=" + resolution);
+    private static WebDriver getChromeDriver() {
         WebDriverManager.chromedriver().setup();
         return new ChromeDriver();
     }
@@ -54,8 +49,5 @@ public class DriverManager {
     private static WebDriver getFirefoxDriver() {
         WebDriverManager.firefoxdriver().setup();
         return new FirefoxDriver();
-    }
-    private static void maximizeWindow(WebDriver driver) {
-        driver.manage().window().maximize();
     }
 }
