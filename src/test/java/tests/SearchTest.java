@@ -4,6 +4,7 @@ import api.search.FilterOptions;
 import dataprovider.ResolutionsDataProvider;
 import helpers.WaitHelps;
 import org.assertj.core.api.Assertions;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.image.ImagePage;
@@ -13,7 +14,7 @@ import pages.search.forms.FilterForm;
 import pages.search.forms.GridWrapperForm;
 import pages.sigin.SignInPage;
 
-import static helpers.Help.navigateBack;
+import static helpers.ElementHelper.navigateBack;
 
 public class SearchTest extends BaseTest{
     private AcceptCookiesForm acceptCookiesForm;
@@ -36,21 +37,30 @@ public class SearchTest extends BaseTest{
         Assertions.assertThat(searchPage.filterButton.isDisplayed())
                 .as("hhhh")
                 .isTrue();
-        searchPage.clickFilterButton(driver);
+
+        searchPage.closeFilter();
 
         Assertions.assertThat(filterForm.personalLicense.isDisplayed())
                 .as("hhhh")
                 .isFalse();
 
-        searchPage.clickFilterButton(driver);
+        searchPage.openFilter();
         filterForm.selectLicense(FilterOptions.License.PERSONAL);
+        searchPage.closeFilter();
         GridWrapperForm imgWrapper = new GridWrapperForm(driver);
         Assertions.assertThat( imgWrapper.badges )
                 .hasSizeLessThanOrEqualTo(0);
-
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         imgWrapper.clickOnTheFirstIMG();
+
         ImagePage imagePage = new ImagePage(driver);
-        WaitHelps.getWait().waitUntilElementToBeVisible(imagePage.likeIcon);
+        //create navigation helper
+        driver.navigate().refresh();
+        WaitHelps.getWait().waitUntilElementToBeVisible(imagePage.editImgButton);
 
         Assertions.assertThat(imagePage.editImgButton.isDisplayed())
                 .as("hhhh")
@@ -88,6 +98,8 @@ public class SearchTest extends BaseTest{
         filterForm.clearAllFilters();
 
         String clickedImgId =  imgWrapper.clickOnThePlusBadge();
+
+        signInPage = new SignInPage(driver);
 
         WaitHelps.getWait().waitUntilElementToBeVisible(signInPage.signInTitle);
 

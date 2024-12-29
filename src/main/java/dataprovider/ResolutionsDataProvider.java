@@ -4,7 +4,7 @@ import org.testng.annotations.DataProvider;
 
 public class ResolutionsDataProvider {
 
-    @DataProvider(name = "resolutionProvider", parallel = true)
+    @DataProvider(name = "resolutionProvider")
     public static Object[][] getResolution() {
         return new Object[][] {
                 {1024, 768},

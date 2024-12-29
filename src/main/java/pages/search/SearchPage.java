@@ -21,11 +21,6 @@ public class SearchPage extends BasePage {
     public WebElement acceptAllCookiesButton;
 
 
-    public void clickFilterButton(WebDriver driver) {
-        ElementHelper.scrollToElement( filterButton ,driver );
-        WaitHelps.getWait().waitUntilElementToBeVisible(filterButton);
-        filterButton.click();
-    }
     public void acceptAllCookies() {
         WaitHelps.getWait().waitUntilElementToBeVisible(acceptAllCookiesButton);
         acceptAllCookiesButton.click();
@@ -34,6 +29,32 @@ public class SearchPage extends BasePage {
     public void switchToIframe(WebDriver driver) {
         WaitHelps.getWait().waitUntilElementToBeVisible(iframe);
         driver.switchTo().frame(iframe);
+    }
+
+    public void openFilter() {
+        if (isOpen()) {
+            return;
+        }
+        clickFilterButton();
+    }
+
+    public void closeFilter() {
+        if (!isOpen()) {
+            return;
+        }
+        clickFilterButton();
+    }
+
+
+    private boolean isOpen() {
+        String state = filterButton.getAttribute("data-automation");
+        return !"closed".equals(state);
+    }
+
+
+    private void clickFilterButton() {
+        WaitHelps.getWait().waitUntilElementToBeVisible(filterButton);
+        filterButton.click();
     }
 
 }
