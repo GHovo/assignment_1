@@ -12,6 +12,8 @@ public class SignInPage extends BasePage {
     public WebElement signInTitle;
     @FindBy(css = "svg[data-testid='modal-close-icon']")
     public WebElement closeButton;
+    @FindBy(xpath = "//button[@data-pulse-name='Continue with email | username']")
+    public WebElement continueWithEmailButton;
 
     public SignInPage(WebDriver driver) {
         super(driver);

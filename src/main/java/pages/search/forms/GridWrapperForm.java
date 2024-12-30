@@ -20,7 +20,7 @@ public class GridWrapperForm extends BasePage {
     @FindBy(xpath = "//div[@id='base_card_item0']/a[div[picture]]")
     private List<WebElement> firstImage;
     @FindBy(xpath = "//div[@id='base_card_item0' and i[@data-testid='badge']]/a")
-    private WebElement firstBadge;
+    public WebElement firstBadge;
     @FindBy(xpath = "//button[@id='try_now_button_item0']")
     private WebElement TryNowFirstImage;
 

@@ -1,6 +1,7 @@
 package pages.search.forms;
 
 import api.search.FilterOptions;
+import helpers.ElementHelper;
 import helpers.WaitHelps;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -22,7 +23,7 @@ public class FilterForm extends BasePage {
     public WebElement chosenFiltersTitle;
     @FindBy(xpath = "//button[span[text()='Personal']]")
     public WebElement chosenFilter;
-    @FindBy(xpath = "//button[span[text()='Clear All']]")
+    @FindBy(id = "search-filter-header-clear")
     public WebElement clearAllButton;
     public FilterForm(WebDriver driver) {
         super(driver);
@@ -38,8 +39,13 @@ public class FilterForm extends BasePage {
         }
         WaitHelps.getWait().waitUntilElementToBeVisible(clearAllButton);
     }
-    public void clearAllFilters(){
-        WaitHelps.getWait().waitUntilElementToBeVisible(clearAllButton);
+
+    public void clearAllFilters(WebDriver driver){
+        try {
+            WaitHelps.getWait().waitUntilElementToBeClickable(clearAllButton);
+        }catch (Exception e){
+            ElementHelper.scrollToElement(clearAllButton, driver);
+        }
         clearAllButton.click();
     }
 }

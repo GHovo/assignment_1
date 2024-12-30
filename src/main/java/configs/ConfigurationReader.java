@@ -2,6 +2,7 @@ package configs;
 
 import constants.common.BaseConstants;
 import constants.common.BrowserTypes;
+import lombok.extern.log4j.Log4j2;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -10,7 +11,7 @@ import java.util.Properties;
 import static constants.common.BaseConstants.BROWSER;
 import static constants.common.BaseConstants.CONFIGURATION_PROPERTIES_PATH;
 import static constants.common.BrowserTypes.CHROME;
-
+@Log4j2
 public class ConfigurationReader {
     public static BrowserTypes BROWSER_TYPE;
     public static String BASE_URL;
@@ -23,10 +24,12 @@ public class ConfigurationReader {
 
 
     public static BrowserTypes getBrowserType() {
+        log.info("Returning browser type: {}", BROWSER_TYPE);
         return BROWSER_TYPE;
     }
 
     public static String getBrowserURL() {
+        log.info("Returning base URL: {}", BASE_URL);
         return BASE_URL;
     }
 
@@ -39,7 +42,7 @@ public class ConfigurationReader {
         try (FileInputStream file = new FileInputStream(path)) {
             properties.load(file);
         } catch (IOException e) {
-            e.getStackTrace();
+            log.info("Properties were not loaded");
         }
         return properties;
     }

@@ -35,12 +35,6 @@ public class DriverManager {
         };
     }
 
-    public static void quitDriver() {
-        Optional.ofNullable(driverThreadLocal.get()).ifPresent(driver -> {
-            driver.quit();
-            driverThreadLocal.remove();
-        });}
-
     private static WebDriver getChromeDriver() {
         WebDriverManager.chromedriver().setup();
         return new ChromeDriver();
@@ -49,5 +43,11 @@ public class DriverManager {
     private static WebDriver getFirefoxDriver() {
         WebDriverManager.firefoxdriver().setup();
         return new FirefoxDriver();
+    }
+    public static void quitDriver() {
+        Optional.ofNullable(driverThreadLocal.get()).ifPresent(driver -> {
+            driver.quit();
+            driverThreadLocal.remove();
+        });
     }
 }

@@ -9,15 +9,7 @@ import org.openqa.selenium.WebElement;
 public class ElementHelper {
     public static void scrollToElement(WebElement element, WebDriver driver){
         ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView(true);", element);
-
     }
-
-    public static void navigateBack(WebDriver driver) {
-        log.info("Get random item from list");
-        driver.navigate().back();
-        WaitHelps.getLongWait();
-    }
-
     public static String getAttribute(WebElement element, String attribute) {
         if (element == null || attribute == null || attribute.isEmpty()) {
             throw new IllegalArgumentException("Element or attribute cannot be null or empty");
